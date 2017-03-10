@@ -12,11 +12,11 @@ You want to make the most of your unlimited meal plan by swiping into Dewick bef
 ## Technologies to be used & features to be implemented
 - The player will navigate through a top-down game map that roughly approximates the path from Halligan to Dewick. The main game engine will be Phaser.io
 - Along the way, they will encounter two main game features:
-  	-Obstacles that they must avoid, mainly in the form of cars
-		   -If they collide with the obstacle, they will be bounced backwards and there will be a score penalty
-	-Professors asking review questions
-		    -Correct answers gain points, wrong answers take away from those gained points
-		    -The time taken to answer the question does continue to run the total game clock
+  -Obstacles that they must avoid, mainly in the form of car
+  	     -If they collide with the obstacle, they will be bounced backwards and there will be a score penalty
+  -Professors asking review questions
+  	      -Correct answers gain points, wrong answers take away from those gained points
+	      -The time taken to answer the question does continue to run the total game clock
 - There will be a leaderboard to compete for the high score
   	- This will use server side data persistance, using a server side framework of Express.js (which utilizes Node by design)
 - The base of the site will use a front-end framework (likely Bootstrap)
