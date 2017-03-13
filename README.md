@@ -28,3 +28,6 @@ We will have users input a username (possibly password as well) in order to gene
 In the event that we would have many users for this game, we want the scoreboard to only render the top ten scores. Another important consideration is that we want "professors" to pop up at checkpoints with a randomly selected question.  We are also considering difficulty levels, so we could vary the rate of questions based on difficulty level.
 
 ## Mock-ups: See associated wireframes
+
+#Comments by Ming
+* "Along the way, they will encounter two main game features: " => anyone take Game Dev in the past?  This is very important in a game design doc.  Well done. Small but very valuable thing I see you are doing: instructions.
