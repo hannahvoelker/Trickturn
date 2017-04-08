@@ -11,7 +11,7 @@
     
 ## Challenges and issues we faced
     
-As of right now, we believe the biggest challenge in the forseeable future is how to integrate Phaser with our database of high scores. We are confident that this is possible. 
+As of right now, we believe the biggest challenge in the forseeable future would be integrating Phaser with our database of high scores. However, we are confident that this is possible. 
 
 Another issue we need to start consider is drafting what questions our professors will ask.
 
