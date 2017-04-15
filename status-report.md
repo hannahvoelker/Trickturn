@@ -18,3 +18,6 @@ Another issue we need to start consider is drafting what questions our professor
 ## Goals for next week
     
 Outline our game board layout and build a navigable player.
+
+#Comments by Ming
+* Definitely doable to integrate Phaser with database or API
