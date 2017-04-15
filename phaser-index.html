@@ -19,9 +19,13 @@
        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
        var timerText;
+       var player; var background;
 
        function preload() {
 	   game.load.image('sky', 'assets/sky.png');
+       game.load.tilemap('tilemap', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
+       game.load.image('roadTiles', 'models/roads/preview.jpg');
+       game.load.image('grassTiles', 'models/roads/grass.png');
        game.load.spritesheet('student', 'assets/student.png', 50, 50);
        }
 
@@ -31,6 +35,16 @@
 
 	   //  A simple background for our game
 	   game.add.sprite(0, 0, 'sky');
+
+       var map = game.add.tilemap('tilemap');
+       map.addTilesetImage('road', 'roadTiles');
+       map.addTilesetImage('grass', 'grassTiles');
+
+       // create background, add collisions
+       background = map.createLayer('Barrier');
+       map.setCollisionBetween(1, 100, true, 'Barrier');
+
+
 
 
 	   // The player and its settings
@@ -66,6 +80,10 @@
 
        function update() {
 	   //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
+
+       // enable collisions between sprite, barrier
+       game.physics.arcade.collide(player, background);
+
 	   timerText.text = 'Time remaining: '
 			  + Math.floor(game.time.events.duration/60000)
 			  + ':' + Math.floor(game.time.events.duration/1000)
