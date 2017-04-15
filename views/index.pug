@@ -1,5 +1,17 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+	doctype html
+	html(lang='en')
+		head
+			meta(charset='utf-8')
+			title Trick Turn
+			script(src= "https://code.jquery.com/jquery-3.1.1.js", integrity= "sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=", crossorigin= "anonymous")
+			script(src= "/js/bootstrap.js")
+		body
+			nav.navbar.navbar-default.navbar-static-top
+				.container-fluid
+					// Brand and toggle get grouped for better mobile display
+					.navbar-header
+						a.navbar-brand(href='/') Trickturn
+			h1 Play the game
