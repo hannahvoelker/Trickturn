@@ -11,48 +11,48 @@
 
   </head>
   <body>
-  	<nav class="navbar navbar-default">
-  	<div class="container-fluid">
-    <div class="navbar-header">
-    <a class="navbar-brand" href="#">Trickturns</a>
-    </div>
-  </div>
-</nav>
-	<h1> Play our game </h1>
+      <nav class="navbar navbar-default">
+  	  <div class="container-fluid">
+	      <div class="navbar-header">
+		  <a class="navbar-brand" href="#">Trickturn</a>
+	      </div>
+	  </div>
+      </nav>
+      <h1> Play our game </h1>
       <script type="text/javascript">
-
+       
        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-
+	 
        var timerText;
-
+	 
        function preload() {
 	   game.load.image('sky', 'assets/sky.png');
-       game.load.spritesheet('student', 'assets/student.png', 50, 50);
+	   game.load.spritesheet('student', 'assets/student.png', 50, 50);
        }
-
+       
        function create() {
 	   //  We're going to be using physics, BUT WE MAY CHANGE TO BOX2D
 	   game.physics.startSystem(Phaser.Physics.ARCADE);
-
+	   
 	   //  A simple background for our game
 	   game.add.sprite(0, 0, 'sky');
-
-
+	   
+	   
 	   // The player and its settings
 	   player = game.add.sprite(50, game.world.height - 150, 'student');
 
-       player.animations.add('rwalk', [0,1]);
-       player.animations.add('lwalk', [2,3]);
-       player.animations.add('celebrate', [4,5]);
+	   player.animations.add('rwalk', [0,1]);
+	   player.animations.add('lwalk', [2,3]);
+	   player.animations.add('celebrate', [4,5]);
 
 	   //  We need to enable physics on the player
 	   game.physics.arcade.enable(player);
-
+	   
 	   //  Player physics properties.
 	   player.body.collideWorldBounds = true;
 
 	   cursors = game.input.keyboard.createCursorKeys();
-
+	   
 	   // Start a timer that ends the game after two minutes
 	   game.time.events.add(Phaser.Timer.SECOND * 5, endGame, this);
 
@@ -68,7 +68,7 @@
 	   var t = game.add.text(game.world.centerX-200, game.world.centerY,
 				 text, style);
        }
-
+       
        function update() {
 	   //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
 	   timerText.text = 'Time remaining: '
@@ -85,13 +85,13 @@
 	       {
 		   //  Move to the left
 		   player.body.velocity.x = -150;
-           player.animations.play('lwalk', 5, true);
+		   player.animations.play('lwalk', 5, true);
 	       }
 	   else if (cursors.right.isDown)
 	       {
 		   //  Move to the right
 		   player.body.velocity.x = 150;
-           player.animations.play('rwalk', 5, true);
+		   player.animations.play('rwalk', 5, true);
 	       }
 	   else if (cursors.up.isDown)
 	       {
@@ -103,7 +103,9 @@
 		   // Move down
 		   player.body.velocity.y = 150;
 	       }
-
+	   else{
+	       player.animations.stop();
+	   }
        }      
       </script>
   </body>
