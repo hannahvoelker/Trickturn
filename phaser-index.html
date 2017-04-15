@@ -6,16 +6,19 @@
 
     <!--Copied from Phaser's Getting Started Tutorial -->
     <script src="js/phaser.min.js"></script>
-    <script src= "js/bootstrap.min.js"></script>
-    <style type="text/css">
-     body {
-         margin: 0;
-     }
-    </style>
+   	<script src ="js/bootstrap.min.js"> </script>
+   	<link rel="stylesheet" href="stylesheets/style.css" type="text/css">
 
   </head>
   <body>
-  	<h1> Play our game </h1>
+  	<nav class="navbar navbar-default">
+  	<div class="container-fluid">
+    <div class="navbar-header">
+    <a class="navbar-brand" href="#">Trickturns</a>
+    </div>
+  </div>
+</nav>
+	<h1> Play our game </h1>
       <script type="text/javascript">
 
        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
