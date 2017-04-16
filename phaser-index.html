@@ -20,26 +20,40 @@
       </nav>
       <h1> Play our game </h1>
       <script type="text/javascript">
-       
-       var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-	 
+
+
+       var game = new Phaser.Game(800, 512, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
        var timerText;
-	 
+       var player; var background; var barrier; var map; 
+
        function preload() {
 	   game.load.image('sky', 'assets/sky.png');
-	   game.load.spritesheet('student', 'assets/student.png', 50, 50);
+       game.load.tilemap('tilemap', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
+       game.load.image('roadTiles', 'models/roads/preview.jpg');
+       game.load.image('grassTiles', 'models/roads/grass.png');
+       game.load.spritesheet('student', 'assets/student.png', 50, 50);
+
        }
        
        function create() {
 	   //  We're going to be using physics, BUT WE MAY CHANGE TO BOX2D
 	   game.physics.startSystem(Phaser.Physics.ARCADE);
-	   
-	   //  A simple background for our game
-	   game.add.sprite(0, 0, 'sky');
-	   
-	   
+
+	   //  A simple background for our 
+       map = game.add.tilemap('tilemap');
+       map.addTilesetImage('road', 'roadTiles');
+       map.addTilesetImage('grass', 'grassTiles');
+
+       // create background, add collisions
+       barrier = map.createLayer('Barrier');
+       background = map.createLayer('Background')
+       barrier.resizeWorld();
+
+       map.setCollisionBetween(1, 100, true, 'Barrier');
+
 	   // The player and its settings
-	   player = game.add.sprite(50, game.world.height - 150, 'student');
+	   player = game.add.sprite(50, game.world.height - 300, 'student');
 
 	   player.animations.add('rwalk', [0,1]);
 	   player.animations.add('lwalk', [2,3]);
@@ -51,26 +65,38 @@
 	   //  Player physics properties.
 	   player.body.collideWorldBounds = true;
 
+       game.camera.follow(player);
+
 	   cursors = game.input.keyboard.createCursorKeys();
 	   
 	   // Start a timer that ends the game after two minutes
-	   game.time.events.add(Phaser.Timer.SECOND * 5, endGame, this);
+	   game.time.events.add(Phaser.Timer.SECOND * 30, endGame, this);
 
 	   timerText = game.add.text(
 	       16, 16, 'Time Remainining :',
-	       { fontSize: '32px', fill: '#000' });
+	       { fontSize: '32px', fill: '#000', fixedToCamera : true});
+            
+       timerText.fixedToCamera = true;
+       timerText.cameraOffset.setTo(16, 16);
        }
+
 
        function endGame(){
 	   // From basics tutorial on adding text
 	   var text = "Game Over!!";
 	   var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
-	   var t = game.add.text(game.world.centerX-200, game.world.centerY,
-				 text, style);
+	   var t = game.add.text(220, 220, text, style);
+       t.fixedToCamera = true;
+       t.cameraOffset.setTo(220, 200);
+       game.camera.follow(null);
        }
        
        function update() {
 	   //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
+
+       // enable collisions between sprite, barrier
+       game.physics.arcade.collide(player, barrier);
+
 	   timerText.text = 'Time remaining: '
 			  + Math.floor(game.time.events.duration/60000)
 			  + ':' + Math.floor(game.time.events.duration/1000)
