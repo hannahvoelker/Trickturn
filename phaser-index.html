@@ -6,15 +6,21 @@
 
     <!--Copied from Phaser's Getting Started Tutorial -->
     <script src="js/phaser.min.js"></script>
-    <style type="text/css">
-     body {
-         margin: 0;
-     }
-    </style>
+   	<script src ="js/bootstrap.min.js"> </script>
+   	<link rel="stylesheet" href="stylesheets/style.css" type="text/css">
 
   </head>
   <body>
+      <nav class="navbar navbar-default">
+  	  <div class="container-fluid">
+	      <div class="navbar-header">
+		  <a class="navbar-brand" href="#">Trickturn</a>
+	      </div>
+	  </div>
+      </nav>
+      <h1> Play our game </h1>
       <script type="text/javascript">
+
 
        var game = new Phaser.Game(800, 512, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
@@ -27,8 +33,9 @@
        game.load.image('roadTiles', 'models/roads/preview.jpg');
        game.load.image('grassTiles', 'models/roads/grass.png');
        game.load.spritesheet('student', 'assets/student.png', 50, 50);
-       }
 
+       }
+       
        function create() {
 	   //  We're going to be using physics, BUT WE MAY CHANGE TO BOX2D
 	   game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -45,24 +52,23 @@
 
        map.setCollisionBetween(1, 100, true, 'Barrier');
 
-
 	   // The player and its settings
 	   player = game.add.sprite(50, game.world.height - 300, 'student');
 
-       player.animations.add('rwalk', [0,1]);
-       player.animations.add('lwalk', [2,3]);
-       player.animations.add('celebrate', [4,5]);
+	   player.animations.add('rwalk', [0,1]);
+	   player.animations.add('lwalk', [2,3]);
+	   player.animations.add('celebrate', [4,5]);
 
 	   //  We need to enable physics on the player
 	   game.physics.arcade.enable(player);
-
+	   
 	   //  Player physics properties.
 	   player.body.collideWorldBounds = true;
 
        game.camera.follow(player);
 
 	   cursors = game.input.keyboard.createCursorKeys();
-
+	   
 	   // Start a timer that ends the game after two minutes
 	   game.time.events.add(Phaser.Timer.SECOND * 30, endGame, this);
 
@@ -84,7 +90,7 @@
        t.cameraOffset.setTo(220, 200);
        game.camera.follow(null);
        }
-
+       
        function update() {
 	   //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
 
@@ -105,13 +111,13 @@
 	       {
 		   //  Move to the left
 		   player.body.velocity.x = -150;
-           player.animations.play('lwalk', 5, true);
+		   player.animations.play('lwalk', 5, true);
 	       }
 	   else if (cursors.right.isDown)
 	       {
 		   //  Move to the right
 		   player.body.velocity.x = 150;
-           player.animations.play('rwalk', 5, true);
+		   player.animations.play('rwalk', 5, true);
 	       }
 	   else if (cursors.up.isDown)
 	       {
@@ -123,7 +129,9 @@
 		   // Move down
 		   player.body.velocity.y = 150;
 	       }
-
+	   else{
+	       player.animations.stop();
+	   }
        }      
       </script>
   </body>

@@ -1,8 +1,35 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #ccf2f9;
+  text-align: center;
 }
 
 a {
   color: #00B7FF;
+}
+body {
+	text-align: center;
+	margin: auto;
+}
+
+.navbar {
+	background-color: #7a7a7a;
+	border-bottom: 1px black solid;
+}
+.navbar li a {
+	color: #aecbf9 !important;
+}
+.navbar li a:hover {
+	color: #333 !important;
+}
+.navbar li.active a {
+	background-color: #ffcccc !important;
+	color: #333 !important;
+}
+.navbar li.active a:hover {
+	color: #000 !important;
+}
+.navbar-default .navbar-brand {
+	color: #aecbf9;
 }
