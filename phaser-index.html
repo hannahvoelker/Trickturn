@@ -6,106 +6,127 @@
 
     <!--Copied from Phaser's Getting Started Tutorial -->
     <script src="js/phaser.min.js"></script>
-   	<script src ="js/bootstrap.min.js"> </script>
-   	<link rel="stylesheet" href="stylesheets/style.css" type="text/css">
+    <script src ="js/bootstrap.min.js"> </script>
+    <link rel="stylesheet" href="stylesheets/style.css" type="text/css">
 
   </head>
   <body>
       <nav class="navbar navbar-default">
-  	  <div class="container-fluid">
-	      <div class="navbar-header">
-		  <a class="navbar-brand" href="#">Trickturn</a>
-	      </div>
-	  </div>
+      <div class="container-fluid">
+          <div class="navbar-header">
+          <a class="navbar-brand" href="#">Trickturn</a>
+          </div>
+      </div>
       </nav>
       <h1> Play our game </h1>
       <script type="text/javascript">
        
        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-	 
+     
        var timerText;
-	 
+     
        function preload() {
-	   game.load.image('sky', 'assets/sky.png');
-	   game.load.spritesheet('student', 'assets/student.png', 50, 50);
+           game.load.image('sky', 'assets/sky.png');
+           game.load.spritesheet('student', 'assets/student.png', 50, 50);
        }
        
        function create() {
-	   //  We're going to be using physics, BUT WE MAY CHANGE TO BOX2D
-	   game.physics.startSystem(Phaser.Physics.ARCADE);
-	   
-	   //  A simple background for our game
-	   game.add.sprite(0, 0, 'sky');
-	   
-	   
-	   // The player and its settings
-	   player = game.add.sprite(50, game.world.height - 150, 'student');
+           //  We're going to be using physics, BUT WE MAY CHANGE TO BOX2D
+           game.physics.startSystem(Phaser.Physics.ARCADE);
+           
+           //  A simple background for our game
+           game.add.sprite(0, 0, 'sky');
+           
+           
+           // The player and its settings
+           player = game.add.sprite(50, game.world.height - 150, 'student');
 
-	   player.animations.add('rwalk', [0,1]);
-	   player.animations.add('lwalk', [2,3]);
-	   player.animations.add('celebrate', [4,5]);
+           player.animations.add('rwalk', [0,1]);
+           player.animations.add('lwalk', [2,3]);
+           player.animations.add('celebrate', [4,5]);
 
-	   //  We need to enable physics on the player
-	   game.physics.arcade.enable(player);
-	   
-	   //  Player physics properties.
-	   player.body.collideWorldBounds = true;
+           //  We need to enable physics on the player
+           game.physics.arcade.enable(player);
+           
+           //  Player physics properties.
+           player.body.collideWorldBounds = true;
 
-	   cursors = game.input.keyboard.createCursorKeys();
-	   
-	   // Start a timer that ends the game after two minutes
-	   game.time.events.add(Phaser.Timer.SECOND * 5, endGame, this);
+           cursors = game.input.keyboard.createCursorKeys();
+           
+           // Start a timer that ends the game after two minutes
+           game.time.events.add(Phaser.Timer.SECOND * 3, endGame, this);
 
-	   timerText = game.add.text(
-	       16, 16, 'Time Remainining :',
-	       { fontSize: '32px', fill: '#000' });
-       }
+           timerText = game.add.text(
+               16, 16, 'Time Remainining :',
+               { fontSize: '32px', fill: '#000' });
+           }
 
-       function endGame(){
-	   // From basics tutorial on adding text
-	   var text = "Game Over!!";
-	   var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
-	   var t = game.add.text(game.world.centerX-200, game.world.centerY,
-				 text, style);
-       }
+        function endGame(){
+            // From basics tutorial on adding text
+            var request = new XMLHttpRequest();
+            var myurl = "http://localhost:3000/submit";
+            var username = prompt("Please enter your username", "username");
+            var email = prompt("Please enter your email", "email");
+            var score = prompt("Please enter your score", "score");
+            var params = "username=" + username + "&email=" + email + "&score=" + score;
+           
+            request.onreadystatechange = function() {
+                if (request.readyState == 4 && request.status == 200){
+                    if (typeof callback === 'function' )
+                        callback(request.responseText);
+                }
+            }
+
+            request.open('POST', myurl, true);
+            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            console.log("sending params: " + params);
+            request.send(params);
+
+            var text = "Game Over! High scores: ";
+            var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
+            var text = game.add.text(game.world.centerX-200, 
+                                    game.world.centerY,
+                                    text, 
+                                    style);
+        }
        
        function update() {
-	   //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
-	   timerText.text = 'Time remaining: '
-			  + Math.floor(game.time.events.duration/60000)
-			  + ':' + Math.floor(game.time.events.duration/1000)
-				.toLocaleString('en-US',
-						{minimumIntegerDigits: 2,
-						 useGrouping:false}); 
-	   
-	   player.body.velocity.x = 0;
-	   player.body.velocity.y = 0;
-	   
-	   if (cursors.left.isDown)
-	       {
-		   //  Move to the left
-		   player.body.velocity.x = -150;
-		   player.animations.play('lwalk', 5, true);
-	       }
-	   else if (cursors.right.isDown)
-	       {
-		   //  Move to the right
-		   player.body.velocity.x = 150;
-		   player.animations.play('rwalk', 5, true);
-	       }
-	   else if (cursors.up.isDown)
-	       {
-		   // Move up
-		   player.body.velocity.y = -150;
-	       }
-	   else if (cursors.down.isDown)
-	       {
-		   // Move down
-		   player.body.velocity.y = 150;
-	       }
-	   else{
-	       player.animations.stop();
-	   }
+           //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
+           timerText.text = 'Time remaining: '
+                  + Math.floor(game.time.events.duration/60000)
+                  + ':' + Math.floor(game.time.events.duration/1000)
+                    .toLocaleString('en-US',
+                            {minimumIntegerDigits: 2,
+                             useGrouping:false}); 
+           
+           player.body.velocity.x = 0;
+           player.body.velocity.y = 0;
+           
+           if (cursors.left.isDown)
+               {
+               //  Move to the left
+               player.body.velocity.x = -150;
+               player.animations.play('lwalk', 5, true);
+               }
+           else if (cursors.right.isDown)
+               {
+               //  Move to the right
+               player.body.velocity.x = 150;
+               player.animations.play('rwalk', 5, true);
+               }
+           else if (cursors.up.isDown)
+               {
+               // Move up
+               player.body.velocity.y = -150;
+               }
+           else if (cursors.down.isDown)
+               {
+               // Move down
+               player.body.velocity.y = 150;
+               }
+           else{
+               player.animations.stop();
+           }
        }      
       </script>
   </body>
