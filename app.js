@@ -43,6 +43,7 @@ app.post('/submit', function(request, response) {
                          username: request.body.username, 
                          highScore: request.body.score});
     console.log("created new user");
+    // TODO: neither of these are printed
     user.save(function(err) {
         if (err) {
             console.log(err);
