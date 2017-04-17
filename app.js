@@ -37,16 +37,27 @@ app.post('/submit', function(request, response) {
     response.header('Access-Control-Allow-Origin', origin);
     response.header("Access-Control-Allow-Headers", "X-Requested-With");
     response.header('Access-Control-Allow-Headers', 'Content-Type');  
+    var User = require('./models/leaders');
 
-    var username = request.body.username;
-    var email    = request.body.email;
-    var score    = parseInt(request.body.score);
-    if (username === undefined || email === undefined || score === undefined) {
-        response.send({"error":"Whoops, something is wrong with your data!"});
-    } 
-
-    var user = require('./models/leaders');
-    console.log("required schema");
+    var user = new User({email: request.body.email,
+                         username: request.body.username, 
+                         highScore: request.body.score});
+    console.log("created new user");
+    user.save(function(err) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("saved successfully");
+        }
+    });
+    
+    User.find(function(err, results) {
+        if (err) {
+            console.log(err);
+        }
+        console.log(results);
+        response.send(results);
+    });
 
 });
 
