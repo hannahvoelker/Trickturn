@@ -27,11 +27,10 @@
        var player; var background; var barrier; var map; 
 
        function preload() {
-	   game.load.image('sky', 'assets/sky.png');
-       game.load.tilemap('tilemap', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
-       game.load.image('roadTiles', 'models/roads/preview.jpg');
-       game.load.image('grassTiles', 'models/roads/grass.png');
-       game.load.spritesheet('student', 'assets/student.png', 50, 50);
+	   game.load.tilemap('tilemap', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
+	   game.load.image('roadTiles', 'models/roads/preview.jpg');
+	   game.load.image('grassTiles', 'models/roads/grass.png');
+	   game.load.spritesheet('student', 'assets/student.png', 50, 50);
 
        }
        
@@ -39,18 +38,18 @@
 	   //  We're going to be using physics, BUT WE MAY CHANGE TO BOX2D
 	   game.physics.startSystem(Phaser.Physics.ARCADE);
 
-	   //  A simple background for our 
-       map = game.add.tilemap('tilemap');
-       map.addTilesetImage('road', 'roadTiles');
-       map.addTilesetImage('grass', 'grassTiles');
+	   //  Background 
+	   map = game.add.tilemap('tilemap');
+	   map.addTilesetImage('road', 'roadTiles');
+	   map.addTilesetImage('grass', 'grassTiles');
 
-       // create background, add collisions
-       barrier = map.createLayer('Barrier');
-       background = map.createLayer('Background')
-       barrier.resizeWorld();
-
-       map.setCollisionBetween(1, 100, true, 'Barrier');
-
+	   // create background, add collisions
+	   barrier = map.createLayer('Barrier');
+	   background = map.createLayer('Background')
+	   barrier.resizeWorld();
+	   
+	   map.setCollisionBetween(1, 100, true, 'Barrier');
+	   
 	   // The player and its settings
 	   player = game.add.sprite(50, game.world.height - 300, 'student');
 
