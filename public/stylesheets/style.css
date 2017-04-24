@@ -1,21 +1,21 @@
 body {
-  padding: 50px;
+  padding: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background: #ccf2f9;
   text-align: center;
+  scroll-behavior: smooth;
 }
 
 a {
   color: #00B7FF;
 }
-body {
-	text-align: center;
-	margin: auto;
-}
 
 .navbar {
+	height: 30px;
 	background-color: #7a7a7a;
 	border-bottom: 1px black solid;
+	text-align: left;
+	padding: 10px;
 }
 .navbar li a {
 	color: #aecbf9 !important;
@@ -32,4 +32,7 @@ body {
 }
 .navbar-default .navbar-brand {
 	color: #aecbf9;
+}
+#game-canvas {
+
 }
