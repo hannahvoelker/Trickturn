@@ -54,7 +54,7 @@
            cursors = game.input.keyboard.createCursorKeys();
            
            // Start a timer that ends the game after two minutes
-           game.time.events.add(Phaser.Timer.SECOND * 3, endGame, this);
+           game.time.events.add(Phaser.Timer.SECOND * 5, endGame, this);
 
            timerText = game.add.text(
                16, 16, 'Time Remainining :',
@@ -62,12 +62,43 @@
            }
 
         function endGame(){
-            // From basics tutorial on adding text
+            // Print "Game Over! \n High Scores"
+            var style = { font: "50px Arial", fill: "#000000", align: "center" };
+            var text = "Game Over!\n High scores:";
+            game.add.text(game.world.centerX-150, game.world.centerY-200, text, style);
+
+            style = { font: "25px Arial", fill: "#000000", align: "center" };
+
+            // Send XMLHttpRequest to database with current user info and retrieve the top 10 high scores
+            loadData(function(responseText) {
+                var data = JSON.parse(responseText).data;
+                // Print each instance of high score
+                for (var i = 0; i < data.length; i++) {
+                    text = (i+1) + ". " + data[i].username + " " + data[i].email + " " + data[i].score + "\n";
+                    game.add.text(game.world.centerX-150, game.world.centerY-90+i*25, text, style);
+                }
+            });
+        }
+        // Send an XMLHttpRequest to database w/ current user info.
+        // Calls callback function with the results
+        // TODO: perhaps a better way to get user info than "prompt"? (kind of annoying)
+        // TODO: need a way to calculate scores and send that info directly to the database instead of prompting user input.
+        function loadData(callback) {
             var request = new XMLHttpRequest();
             var myurl = "http://localhost:3000/submit";
-            var username = prompt("Please enter your username", "username");
-            var email = prompt("Please enter your email", "email");
-            var score = prompt("Please enter your score", "score");
+            var username = prompt("Please enter your username", "");
+            var email = prompt("Please enter your email", "example01@tufts.edu");
+            
+            // Validate email with regex
+            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+            while (! re.test(email)) {
+                email = prompt("Please re-enter your email", "example01@tufts.edu");
+            }
+            var score = parseInt(prompt("Please enter your score", ""));
+            while (! score) {
+                score = prompt("Please re-enter your score", "")
+            }
             var params = "username=" + username + "&email=" + email + "&score=" + score;
            
             request.onreadystatechange = function() {
@@ -81,13 +112,6 @@
             request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             console.log("sending params: " + params);
             request.send(params);
-
-            var text = "Game Over! High scores: ";
-            var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
-            var text = game.add.text(game.world.centerX-200, 
-                                    game.world.centerY,
-                                    text, 
-                                    style);
         }
        
        function update() {

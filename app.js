@@ -23,42 +23,41 @@ app.listen(app.get('port'), function() {
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
 
+var mongoUri = 'mongodb://localhost:27017';
+var MongoClient = require('mongodb').MongoClient, format = require('util').format;
+var db = MongoClient.connect(mongoUri, function(err, databaseConnection) {
+    if (err) throw err;
+    db = databaseConnection;
+    db.dropDatabase();
+    db.createCollection('data', null);
+});
 
+// Updates db with a new score, inserting a new instance if email is not found.
+// Returns the top 10 instances of high scores.
+// Request parameters: email, username and score
+// Response type: an array of results stored under "data"
 app.post('/submit', function(request, response) {
-    console.log("post submit");
-    var origin = request.get('origin'); 
-    response.header('Access-Control-Allow-Origin', origin);
-    response.header("Access-Control-Allow-Headers", "X-Requested-With");
-    response.header('Access-Control-Allow-Headers', 'Content-Type');  
-    var User = require('./models/leaders');
+    var toInsert = {
+        "email":    request.body.email,
+        "username": request.body.username,
+        "score":    request.body.score
+    }
 
-    var user = new User({email: request.body.email,
-                         username: request.body.username, 
-                         highScore: request.body.score});
-    console.log("created new user");
-    // TODO: neither of these are printed
-    user.save(function(err) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("saved successfully");
-        }
+    db.collection('data', function(er, collection) {
+        collection.update({ email: request.body.email }, toInsert, {upsert : true}, function(err, results) {
+        });
+        collection.find().sort({ score: -1 }).limit(10).toArray(function(err, results) {
+            response.send({"data": results});
+        });
     });
     
-    User.find(function(err, results) {
-        if (err) {
-            console.log(err);
-        }
-        console.log(results);
-        response.send(results);
-    });
 
 });
 
