@@ -80,107 +80,112 @@
             timerText.fixedToCamera = true;
             timerText.cameraOffset.setTo(16, 16);
         }
-<<<<<<< HEAD
-
+        
         function endGame(){
-            // Print "Game Over! \n High Scores"
-            var style = { font: "50px Arial", fill: "#000000", align: "center" };
-            var text = "Game Over!\n High scores:";
-            game.add.text(game.world.centerX-150, game.world.centerY-200, text, style);
-            t.fixedToCamera = true;
-            t.cameraOffset.setTo(220, 200);
-            game.camera.follow(null);
+              // Print "Game Over! \n High Scores"
+              var style = { font: "50px Arial", fill: "#000000", align: "center" };
+              var text = "Game Over!\n High scores:";
+              game.add.text(game.world.centerX-150, game.world.centerY-200, text, style);
+              t.fixedToCamera = true;
+              t.cameraOffset.setTo(220, 200);
+              game.camera.follow(null);
 
-            style = { font: "25px Arial", fill: "#000000", align: "center" };
+              style = { font: "25px Arial", fill: "#000000", align: "center" };
 
-            // Send XMLHttpRequest to database with current user info and retrieve the top 10 high scores
-            loadData(function(responseText) {
-                var data = JSON.parse(responseText).data;
-                // Print each instance of high score
-                for (var i = 0; i < data.length; i++) {
-                    text = (i+1) + ". " + data[i].username + " " + data[i].email + " " + data[i].score + "\n";
-                    game.add.text(game.world.centerX-150, game.world.centerY-90+i*25, text, style);
-                }
-            });
-        }
-        // Send an XMLHttpRequest to database w/ current user info.
-        // Calls callback function with the results
-        // TODO: perhaps a better way to get user info than "prompt"? (kind of annoying)
-        // TODO: need a way to calculate scores and send that info directly to the database instead of prompting user input.
-        function loadData(callback) {
-            var request = new XMLHttpRequest();
-            var myurl = "http://localhost:3000/submit";
-            var username = prompt("Please enter your username", "");
-            var email = prompt("Please enter your email", "example01@tufts.edu");
-            
-            // Validate email with regex
-            var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+              // Send XMLHttpRequest to database with current user info and retrieve the top 10 high scores
+              loadData(function(responseText) {
+                  var data = JSON.parse(responseText).data;
+                  // Print each instance of high score
+                  for (var i = 0; i < data.length; i++) {
+                      text = (i+1) + ". " + data[i].username + " " + data[i].email + " " + data[i].score + "\n";
+                      game.add.text(game.world.centerX-150, game.world.centerY-90+i*25, text, style);
+                  }
+              });
+          }
+          // Send an XMLHttpRequest to database w/ current user info.
+          // Calls callback function with the results
+          // TODO: perhaps a better way to get user info than "prompt"? (kind of annoying)
+          // TODO: need a way to calculate scores and send that info directly to the database instead of prompting user input.
+          function loadData(callback) {
+              var request = new XMLHttpRequest();
+              var myurl = "http://localhost:3000/submit";
+              var username = prompt("Please enter your username", "");
+              var email = prompt("Please enter your email", "example01@tufts.edu");
 
-            while (! re.test(email)) {
-                email = prompt("Please re-enter your email", "example01@tufts.edu");
-            }
-            var score = parseInt(prompt("Please enter your score", ""));
-            while (! score) {
-                score = prompt("Please re-enter your score", "")
-            }
-            var params = "username=" + username + "&email=" + email + "&score=" + score;
-           
-            request.onreadystatechange = function() {
-                if (request.readyState == 4 && request.status == 200){
-                    if (typeof callback === 'function' )
-                        callback(request.responseText);
-                }
-            }
+              // Validate email with regex
+              var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-            request.open('POST', myurl, true);
-            request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            console.log("sending params: " + params);
-            request.send(params);
-        }
-       
-       function update() {
-           //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
+              while (! re.test(email)) {
+                  email = prompt("Please re-enter your email", "example01@tufts.edu");
+              }
+              var score = parseInt(prompt("Please enter your score", ""));
+              while (! score) {
+                  score = prompt("Please re-enter your score", "")
+              }
+              var params = "username=" + username + "&email=" + email + "&score=" + score;
 
-           // enable collisions between sprite, barrier
-           game.physics.arcade.collide(player, barrier);
+              request.onreadystatechange = function() {
+                  if (request.readyState == 4 && request.status == 200){
+                      if (typeof callback === 'function' )
+                          callback(request.responseText);
+                  }
+              }
 
-           timerText.text = 'Time remaining: '
-                  + Math.floor(game.time.events.duration/60000)
-                  + ':' + Math.floor(game.time.events.duration/1000)
-                    .toLocaleString('en-US',
-                            {minimumIntegerDigits: 2,
-                             useGrouping:false}); 
-           
-           player.body.velocity.x = 0;
-           player.body.velocity.y = 0;
-           
-           if (cursors.left.isDown)
-               {
-               //  Move to the left
-               player.body.velocity.x = -150;
-               player.animations.play('lwalk', 5, true);
-               }
-           else if (cursors.right.isDown)
-               {
-               //  Move to the right
-               player.body.velocity.x = 150;
-               player.animations.play('rwalk', 5, true);
-               }
-           else if (cursors.up.isDown)
-               {
-               // Move up
-               player.body.velocity.y = -150;
-               }
-           else if (cursors.down.isDown)
-               {
-               // Move down
-               player.body.velocity.y = 150;
-               }
-           else{
-               player.animations.stop();
-           }
-        }
-      </script>
+              request.open('POST', myurl, true);
+              request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              console.log("sending params: " + params);
+              request.send(params);
+          }
+
+	 function askQuestion(){
+	     return;
+	 }
+	 
+	 function update() {
+	     // check for collisions
+	     game.physics.arcade.collide(player, barrier);
+	     game.physics.arcade.overlap(player, question, askQuestion,
+					 null, this);
+	     game.physics.arcade.collide(player, dewick, winGame, null, this);
+	     
+	     //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
+	     timerText.text = 'Time remaining: '
+			    + Math.floor(game.time.events.duration/60000)
+			    + ':' + Math.floor(game.time.events.duration/1000)
+				  .toLocaleString('en-US',
+						  {minimumIntegerDigits: 2,
+						   useGrouping:false}); 
+	     
+	     player.body.velocity.x = 0;
+	     player.body.velocity.y = 0;
+	     
+	     if (cursors.left.isDown)
+		 {
+		     //  Move to the left
+		     player.body.velocity.x = -150;
+		     player.animations.play('lwalk', 5, true);
+		 }
+	     else if (cursors.right.isDown)
+		 {
+		     //  Move to the right
+		     player.body.velocity.x = 150;
+		     player.animations.play('rwalk', 5, true);
+		 }
+	     else if (cursors.up.isDown)
+		 {
+		     // Move up
+		     player.body.velocity.y = -150;
+		 }
+	     else if (cursors.down.isDown)
+		 {
+		     // Move down
+		     player.body.velocity.y = 150;
+		 }
+	     else{
+		 player.animations.stop();
+	     }
+	 }      
+	</script> 
     </div>
   </body>
 </html>
