@@ -7,5 +7,8 @@ const userSchema = new mongoose.Schema({
 	username: String,
 	highScore: Number
 });
+mongoose.Promise = require('q').Promise;
+// assert.ok(query.exec() instanceof require('q').makePromise);
 
-module.exports = mongoose.model('user', userSchema);
+
+module.exports = mongoose.model('User', userSchema);
