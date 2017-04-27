@@ -1,0 +1,14 @@
+{
+	"Time complexity of MergeSort": {
+		"C": "O(nlogn)"
+	},
+	"Which of these is NP-complete": {
+		"A": "Hamiltonian Cycle"
+	},
+	"What does the HTTP status code 200 mean?": {
+		"C": "OK"
+	},
+	"What is 17 in binary?": {
+		"A": "10001"
+	}
+}
