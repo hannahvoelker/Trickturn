@@ -43,6 +43,18 @@
 	   map.addTilesetImage('road', 'roadTiles');
 	   map.addTilesetImage('grass', 'grassTiles');
 
+       // add collisions from layer
+       questions = game.add.group();
+       victory   = game.add.group();
+
+       questions.enableBody = true;
+       victory.enableBody   = true;
+
+
+       map.createFromObjects('Events', 7, 0, true, false, questions);
+       map.createFromObjects('Events', 10, 0, true, false, questions);
+       map.createFromObjects('Events', 11, 0, true, false, victory);
+
 	   // create background, add collisions
 	   barrier = map.createLayer('Barrier');
 	   background = map.createLayer('Background')
@@ -89,11 +101,17 @@
        game.camera.follow(null);
        }
        
+       function askQ(){
+            console.log("this works!!");
+       }
+
        function update() {
 	   //from http://stackoverflow.com/questions/8043026/javascript-format-number-to-have-2-digit
 
        // enable collisions between sprite, barrier
        game.physics.arcade.collide(player, barrier);
+
+       game.physics.arcade.overlap(player, questions, collectCoin, null, this);
 
 	   timerText.text = 'Time remaining: '
 			  + Math.floor(game.time.events.duration/60000)
