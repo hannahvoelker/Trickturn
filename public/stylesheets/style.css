@@ -33,6 +33,8 @@ a {
 .navbar-default .navbar-brand {
 	color: #aecbf9;
 }
-#game-canvas {
 
+#game-canvas {
+	padding: 10px;
+	scroll-behavior: smooth;
 }
