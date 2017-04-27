@@ -111,7 +111,7 @@
        // enable collisions between sprite, barrier
        game.physics.arcade.collide(player, barrier);
 
-       game.physics.arcade.overlap(player, questions, collectCoin, null, this);
+       game.physics.arcade.overlap(player, questions, askQ, null, this);
 
 	   timerText.text = 'Time remaining: '
 			  + Math.floor(game.time.events.duration/60000)
