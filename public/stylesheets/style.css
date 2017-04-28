@@ -35,6 +35,7 @@ a {
 }
 
 #game-canvas {
-	padding: 10px;
-	scroll-behavior: smooth;
+    height: 800px;
+    padding: 10px;
+    scroll-behavior: smooth;
 }
