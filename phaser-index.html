@@ -31,6 +31,7 @@
 	   game.load.image('roadTiles', 'models/roads/preview.jpg');
 	   game.load.image('grassTiles', 'models/roads/grass.png');
 	   game.load.spritesheet('student', 'assets/student.png', 50, 50);
+       game.load.spritesheet('event', 'assets/event.png', 30, 512)
 
        }
        
@@ -51,9 +52,9 @@
        victory.enableBody   = true;
 
 
-       map.createFromObjects('Events', 7, 0, true, false, questions);
-       map.createFromObjects('Events', 10, 0, true, false, questions);
-       map.createFromObjects('Events', 11, 0, true, false, victory);
+       map.createFromObjects('Events', 7, 'event', 0, true, false, questions);
+       map.createFromObjects('Events', 10, 0, 'event', true, false, questions);
+       map.createFromObjects('Events', 11, 0, 'event', true, false, victory);
 
 	   // create background, add collisions
 	   barrier = map.createLayer('Barrier');
