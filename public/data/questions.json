@@ -1,0 +1,26 @@
+{
+	"Time complexity of MergeSort": {
+		"A": "O(n^2)",
+		"B": "O(n)",
+		"C": "O(nlogn)",
+		"D": "O(logn)"
+	},
+	"Which of these is NP-complete?": {
+		"A": "Hamiltonian Cycle",
+		"B": "Prime?",
+		"C": "Shortest Path",
+		"D": "Shortest Common Subsequence"
+	},
+	"What does the HTTP status code 200 mean?": {
+		"A": "Not found",
+		"B": "Redirected",
+		"C": "OK",
+		"D": "Internal Server Error"
+	},
+	"What is 17 in binary?": {
+		"A": "10001",
+		"B": "10010",
+		"C": "10011",
+		"D": "11001"
+	}
+}
