@@ -13,8 +13,10 @@
 	 var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 	 
 	 var timerText;
-	 var player; var background; var barrier; var map;
+	 var player; var q1; var q2; var finish; var background; var barrier; var map;
+	 var q1asked = false; var q2asked = false;
 	 var score = 0;
+
 	 
 	 function preload() {
 	     game.load.tilemap('tilemap', 'assets/map.json', null, Phaser.Tilemap.TILED_JSON);
@@ -22,7 +24,7 @@
 	     game.load.image('grassTiles', 'models/roads/grass.png');
 	     game.load.spritesheet('student', 'assets/student.png', 50, 50);
 	     game.load.image('answeroption', 'assets/answeroption.png');
-			     
+	     game.load.spritesheet('event', 'assets/event.png');
 	 }
 	 
 	 function create() {
@@ -43,6 +45,10 @@
 	     
 	     // The player and its settings
 	     player = game.add.sprite(50, game.world.height - 300, 'student');
+
+	     q1     = game.add.sprite(1220, 0, 'event');
+	     q2     = game.add.sprite(2650, 0, 'event');
+	     finish = game.add.sprite(4080, 0, 'event');
 	     
 	     player.animations.add('rwalk', [0,1]);
 	     player.animations.add('lwalk', [2,3]);
@@ -139,6 +145,20 @@
 	     request.send(params);
 	 }
 	 
+	 function askQ1(p, q){
+	 	if (not q1asked){
+	 		q1asked = true;
+	 		askQuestion();
+	 	}
+	 }
+
+	 function askQ2(p, q){
+	 	if(not q2asked){
+	 		q2asked = true;
+	 		askQuestion();
+	 	}
+	 }
+
 	 function askQuestion(){
 	     // Then add the menu
              menu = game.add.sprite(w/2, h/2, 'answeroption');
@@ -148,14 +168,15 @@
              choiseLabel = game.add.text(w/2, h-150, 'Click outside menu to continue', { font: '30px Arial', fill: '#fff' });
              choiseLabel.anchor.setTo(0.5, 0.5);
 	 }
-	 
+
 	 function update() {
 	     // check for collisions
 	     game.physics.arcade.collide(player, barrier);
-	     //	     game.physics.arcade.overlap(player, question, askQuestion,
-	     //					 null, this);
-	     //	     game.physics.arcade.collide(player, dewick, winGame,
-	     //                                      null, this);
+
+	     game.physics.arcade.overlap(player, q1, askQ1, null, this);
+	     game.physics.arcade.overlap(player, q2, askQ2, null, this);
+	  
+	     game.physics.arcade.overlap(player, finish, winGame, null, this);
 	     
 	     
 	     player.body.velocity.x = 0;
