@@ -23,8 +23,8 @@
 	     game.load.image('roadTiles', 'models/roads/preview.jpg');
 	     game.load.image('grassTiles', 'models/roads/grass.png');
 	     game.load.spritesheet('student', 'assets/student.png', 50, 50);
-	     game.load.image('answeroption', 'assets/answeroption.png');
-	     game.load.spritesheet('event', 'assets/event.png');
+	     game.load.image('answeroption', 'assets/nr-cone.jpg');
+	     game.load.spritesheet('event', 'assets/event.png', 30, 512);
 	 }
 	 
 	 function create() {
@@ -46,6 +46,7 @@
 	     // The player and its settings
 	     player = game.add.sprite(50, game.world.height - 300, 'student');
 
+	     test = game.add.sprite(0, 0, 'event');
 	     q1     = game.add.sprite(1220, 0, 'event');
 	     q2     = game.add.sprite(2650, 0, 'event');
 	     finish = game.add.sprite(4080, 0, 'event');
@@ -56,6 +57,9 @@
 	     
 	     //  We need to enable physics on the player
 	     game.physics.arcade.enable(player);
+	     game.physics.arcade.enable(q1);
+	     game.physics.arcade.enable(q2);
+	     game.physics.arcade.enable(finish);
 	     
 	     //  Player physics properties.
 	     player.body.collideWorldBounds = true;
@@ -146,14 +150,16 @@
 	 }
 	 
 	 function askQ1(p, q){
-	 	if (q1asked == true){
+	 	if (q1asked == false ){
+		 	console.log("attempting to ask question 1");
 	 		q1asked = true;
 	 		askQuestion();
 	 	}
 	 }
 
 	 function askQ2(p, q){
-	 	if(q2asked == true){
+	 	if (q2asked == false) {
+		 	console.log("attempting to ask question 2");
 	 		q2asked = true;
 	 		askQuestion();
 	 	}
@@ -173,12 +179,16 @@
              choiseLabel.anchor.setTo(0.5, 0.5);
 	 }
 
+	 function winGame(){
+	 	console.log("you win!!!");
+	 }
+
 	 function update() {
 	     // check for collisions
 	     game.physics.arcade.collide(player, barrier);
 
-	     game.physics.arcade.overlap(player, q1, askQ1, null, this);
-	     game.physics.arcade.overlap(player, q2, askQ2, null, this);
+	     game.physics.arcade.overlap(player, q1, function(){askQ1(player, q1);}, null, this);
+	     game.physics.arcade.overlap(player, q2, function(){askQ2(player, q2);}, null, this);
 	  
 	     game.physics.arcade.overlap(player, finish, winGame, null, this);
 	     
