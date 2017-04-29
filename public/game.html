@@ -45,11 +45,13 @@
 	     
 	     // The player and its settings
 	     player = game.add.sprite(50, game.world.height - 300, 'student');
-
-	     test = game.add.sprite(0, 0, 'event');
 	     q1     = game.add.sprite(1220, 0, 'event');
 	     q2     = game.add.sprite(2650, 0, 'event');
 	     finish = game.add.sprite(4080, 0, 'event');
+
+	     q2.alpha = 0;
+	     q1.alpha = 0;
+	     finish.alpha = 0;
 	     
 	     player.animations.add('rwalk', [0,1]);
 	     player.animations.add('lwalk', [2,3]);
