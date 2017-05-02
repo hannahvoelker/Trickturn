@@ -120,6 +120,14 @@ function createCar(i, y) {
 	car.body.velocity.y = vector * carTypes[carType].velocity;
 }
 
+function destroyCar(car){
+	buffer = +200;
+	y = car.y;
+	if(y > (h + buffer) || y < -buffer){
+		car.kill();
+	}
+}
+
 function hitByCar(){
 	console.log("HIT AND RUN!!!");
 }
@@ -345,4 +353,7 @@ function update() {
     else{
 	player.animations.stop();
     }
+
+    // DESTORY OFF SCREEN CARS
+    cars.forEach(destroyCar, this);
 }
