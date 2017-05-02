@@ -14,11 +14,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.set('post', 3000);
-app.listen(app.get('port'), function() {
-    console.log('app.js is running on port', app.get('port'));
-});
-
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -30,7 +25,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
-var mongoUri = 'mongodb://localhost:27017';
+var mongoUri = process.env.MONGODB_URI || process.env.MONGOLAB_URI ||
+               process.env.MONGOHQ_URL ||'mongodb://localhost:27017';
 var MongoClient = require('mongodb').MongoClient, format = require('util').format;
 var db = MongoClient.connect(mongoUri, function(err, databaseConnection) {
     if (err) throw err;
