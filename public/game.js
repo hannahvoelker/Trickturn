@@ -333,10 +333,12 @@ function askQ2(p, q){
 }
 
 function pausePlayer(){
+	player.body.moves = false;
     game.camera.follow(null);
 }
 
 function unPausePlayer(){
+	player.body.moves = true;
     game.camera.follow(player);
 }
 
