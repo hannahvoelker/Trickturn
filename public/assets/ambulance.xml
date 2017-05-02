@@ -1,0 +1,6 @@
+<TextureAtlas imagePath="ambulance.png">
+	<SubTexture name="0" x="0" y="0" width="51" height="104"/>
+	<SubTexture name="1" x="51" y="0" width="51" height="104"/>
+	<SubTexture name="2" x="102" y="0" width="51" height="104"/>
+	<SubTexture name="3" x="153" y="0" width="51" height="104"/>
+</TextureAtlas>

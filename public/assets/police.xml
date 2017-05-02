@@ -1,0 +1,6 @@
+<TextureAtlas imagePath="police.png">
+	<SubTexture name="0" x="0" y="0" width="49" height="107"/>
+	<SubTexture name="1" x="49" y="0" width="49" height="107"/>
+	<SubTexture name="2" x="98" y="0" width="49" height="107"/>
+	<SubTexture name="3" x="147" y="0" width="49" height="107"/>
+</TextureAtlas>
