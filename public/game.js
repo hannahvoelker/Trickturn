@@ -1,38 +1,48 @@
 var w = 800;
 var h = 512;
-var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(w, h, Phaser.AUTO, '', { preload: preload, create: create, update: update});
 
 var timer; var timerText;
 var player; var q1; var q2; var finish; var background; var barrier; var map;
 var q1asked = false; var q2asked = false;
 var score = 0;
 
+var playerBodyScaleX = 0.6;	// resize player hitbox width
+var playerBodyScaleY = 1; // resize player hitbox height
+
+// QUESTION LOCATION
+var q1x = 1220;
+var q2x = 2650;
+
 ///// CAR VARIABLES
 
 var cars; // car group
 var car; // current car instance
 
+var carBodyScaleX = 0.8;		// resize car hitbox width
+var carBodyScaleY = 1;	// resize car hitbox height
+
 // assign velocity, interval (in whole seconds), and group to each car type
 // 0 = texture atlas, 1 = image, 2 = animated spritesheet
 // also manually insert image heights and widths to simplify future life
-var carTypes = {'ambulance': {velocity: 300, interval: 10, group: 2, h: 104, w: 51},
-				'audi': {velocity: 150, interval: 2, group: 0, h: 107, w: 49},
+var carTypes = {'ambulance': {velocity: 300, interval: 17, group: 2, h: 104, w: 51},
+				'audi': {velocity: 150, interval: 3, group: 0, h: 107, w: 49},
 				'bus': {velocity: 50, interval: 8, group: 1, h: 193, w: 60},
-				'car': {velocity: 125, interval: 2, group: 0, h: 109, w: 46},
+				'car': {velocity: 120, interval: 3, group: 0, h: 109, w: 46},
 				'pickup': {velocity: 100, interval: 4, group: 0, h: 102, w: 56},
-				'police': {velocity: 300, interval: 10, group: 2, h: 107, w: 49},
-				'taxi': {velocity: 175, interval: 2, group: 0, h: 112, w: 57},
-				'truck': {velocity: 25, interval: 16, group: 1, h: 185, w: 58},
-				'van': {velocity: 75, interval: 4, group: 0, h: 98, w: 47},
+				'police': {velocity: 300, interval: 29, group: 2, h: 107, w: 49},
+				'taxi': {velocity: 180, interval: 2, group: 0, h: 112, w: 57},
+				'truck': {velocity: 30, interval: 16, group: 1, h: 185, w: 58},
+				'van': {velocity: 80, interval: 5, group: 0, h: 98, w: 47},
 				'viper': {velocity: 200, interval: 2, group: 0, h: 110, w: 54}};
 
 // car slots based on current map, DO NOT MODIFY unless map changed
-var carSlotX = [195, 260, 355, 450, 515, 610, 705, 770, 865, 960, 1025,
-    			1635, 1700, 1795, 1890, 1955, 2050, 2145, 2210, 2305, 2400, 2465,
-				3045, 3110, 3205, 3300, 3365, 3460, 3555, 3620, 3715, 3810, 3875];
+var carSlotX = [225, 290, 385, 480, 545, 640, 735, 800, 895, 990, 1055,
+    			1665, 1730, 1825, 1920, 1985, 2080, 2175, 2240, 2335, 2430, 2495,
+				3075, 3140, 3235, 3330, 3395, 3490, 3585, 3670, 3745, 3840, 3905];
 
 // assign one car type to each slot
-var carSlotType = ['truck', 'bus', 'ambulance', 'van', 'pickup', 'police', 'taxi', 'car', 'ambulance', 'audi', 'viper',
+var carSlotType = ['truck', 'bus', 'ambulance', 'van', 'pickup', 'police', 'car', 'taxi', 'ambulance', 'audi', 'viper',
     				'bus', 'pickup', 'police', 'car', 'audi', 'ambulance', 'viper', 'taxi', 'police', 'van', 'truck',
     				'viper', 'audi', 'ambulance', 'car', 'taxi', 'police', 'pickup', 'van', 'ambulance', 'bus', 'truck'];
 
@@ -41,7 +51,7 @@ var carSlotVector = [1, 1, -1, 1, 1, 1, -1, -1, 1, -1, -1,
     	    			1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1,
     					-1, -1, 1, -1, -1, -1, 1, 1, -1, 1, 1];
 
-var slots = carSlotX.length;
+var slots = carSlotX.length; // number of slots
 
 
 ///// CAR FUNCTIONS
@@ -98,10 +108,6 @@ function createCar(i, y) {
 	vector = carSlotVector[i];
 	x = carSlotX[i];
 
-	if (vector == -1) {
-		x += carTypes[carType].w;
-	}
-
 	switch(group) {
 		case 0:
 			car = cars.create(x, y, 'cars', carType);
@@ -116,8 +122,12 @@ function createCar(i, y) {
 			break;
 	}
 
+	car.anchor.setTo(0.5, 0.5);
 	car.scale.setTo(vector, vector);
 	car.body.velocity.y = vector * carTypes[carType].velocity;
+
+	car.body.width = carBodyScaleX * carTypes[carType].w;
+	car.body.height = carBodyScaleY * carTypes[carType].h;
 }
 
 function destroyCar(car){
@@ -188,6 +198,11 @@ function create() {
     game.physics.arcade.enable(q1);
     game.physics.arcade.enable(q2);
     game.physics.arcade.enable(finish);
+
+    // RESIZE PLAYER HITBOX
+    player.anchor.setTo(0.5, 0.5);
+    player.body.width = player.width * playerBodyScaleX;
+    player.body.height = player.height * playerBodyScaleY;
     
     //  Player physics properties.
     player.body.collideWorldBounds = true;
