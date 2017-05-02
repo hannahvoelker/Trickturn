@@ -54,7 +54,7 @@ var carSlotVector = [1, 1, -1, 1, 1, 1, -1, -1, 1, -1, -1,
     					-1, -1, 1, -1, -1, -1, 1, 1, -1, 1, 1];
 
 var slots = carSlotX.length; // number of slots
-
+//var slots = 0;
 
 ///// CAR FUNCTIONS
 
@@ -261,6 +261,7 @@ function endGame(){
     // and retrieve the top 10 high scores
     loadData(function(responseText) {
         var data = JSON.parse(responseText).data;
+        console.log(data);
         // Print each instance of high score
         for (var i = 0; i < data.length; i++) {
             text = (i+1) + ". " + data[i].username + " " +
