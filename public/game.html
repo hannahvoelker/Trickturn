@@ -14,7 +14,7 @@
 	 
 	 var timerText;
 	 var player; var q1; var q2; var finish; var background; var barrier; var map;
-	 var q1asked = false; var q2asked = false;
+	 var q1asked = false; var q2asked = false; var finished = false;
 	 var score = 0;
 
 	 
@@ -97,13 +97,13 @@
 	     var style = { font: "50px Arial", fill: "#000000",
 			   align: "center" };
 	     var text = "Game Over!\n High scores:";
-	     game.add.text(game.world.centerX-150, game.world.centerY-200,
+	     t = game.add.text(game.world.centerX-150, game.world.centerY-200,
 			   text, style);
 	     t.fixedToCamera = true;
 	     t.cameraOffset.setTo(220, 200);
 	     game.camera.follow(null);
 	     
-	     style = { font: "25px Arial", fill: "#000000", align: "center" };
+	     style = { font: "25px Arial", fill: "#fff", align: "center" };
 	     
 	     // Send XMLHttpRequest to database with current user info
 	     // and retrieve the top 10 high scores
@@ -228,7 +228,10 @@
 	 }
 
 	 function winGame(){
-	 	console.log("you win!!!");
+	 	if(finished == false){
+	 		finished = true;
+	 		endGame();
+	 	}
 	 }
 
 	 function update() {
