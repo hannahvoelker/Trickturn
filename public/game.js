@@ -10,7 +10,7 @@ var score = 0;
 var playerBodyScaleX = 0.6;	// resize player hitbox width
 var playerBodyScaleY = 1; // resize player hitbox height
 
-// QUESTION LOCATION
+// QUESTION LOCATIONS
 var q1x = 1220;
 var q2x = 2650;
 
@@ -139,7 +139,10 @@ function destroyCar(car){
 }
 
 function hitByCar(){
-	console.log("HIT AND RUN!!!");
+	if(q2asked) {player.body.x = q2x;}
+	else if(q1asked) {player.body.x = q1x;}
+	else {player.body.x = 0;}
+	player.body.y = h/2;
 }
 
 ///// PRELOAD
@@ -180,9 +183,9 @@ function create() {
     map.setCollisionBetween(1, 100, true, 'Barrier');
     
     // The player and its settings
-    player = game.add.sprite(0, game.world.height - 300, 'student');
-    q1     = game.add.sprite(1220, 0, 'event');
-    q2     = game.add.sprite(2650, 0, 'event');
+    player = game.add.sprite(0, h/2, 'student');
+    q1     = game.add.sprite(q1x, 0, 'event');
+    q2     = game.add.sprite(q2x, 0, 'event');
     finish = game.add.sprite(4080, 0, 'event');
 
     q2.alpha = 0;
@@ -227,7 +230,6 @@ function create() {
     timer.loop(1000, updateCars, this);
 
     timer.start();
-
 }
 
 function updateScore(){
