@@ -14,7 +14,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.set('post', 3000);
+app.set('port', 3000);
 app.listen(app.get('port'), function() {
     console.log('app.js is running on port', app.get('port'));
 });

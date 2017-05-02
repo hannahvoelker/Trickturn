@@ -1,0 +1,8 @@
+<TextureAtlas imagePath="cars.png">
+	<SubTexture name="audi" x="0" y="0" width="49" height="107"/>
+	<SubTexture name="car" x="49" y="0" width="46" height="109"/>
+	<SubTexture name="pickup" x="95" y="0" width="56" height="102"/>
+	<SubTexture name="taxi" x="151" y="0" width="57" height="112"/>
+	<SubTexture name="van" x="208" y="0" width="47" height="98"/>
+	<SubTexture name="viper" x="255" y="0" width="54" height="110"/>
+</TextureAtlas>
