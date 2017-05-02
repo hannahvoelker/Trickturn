@@ -25,6 +25,7 @@
 	     game.load.spritesheet('student', 'assets/student.png', 50, 50);
 	     game.load.image('answeroption', 'assets/nr-cone.jpg');
 	     game.load.spritesheet('event', 'assets/event.png', 30, 512);
+	     game.load.image('dewick', 'assets/dewick.jpg');
 	 }
 	 
 	 function create() {
@@ -48,6 +49,9 @@
 	     q1     = game.add.sprite(1220, 0, 'event');
 	     q2     = game.add.sprite(2650, 0, 'event');
 	     finish = game.add.sprite(4080, 0, 'event');
+
+	     dewick = game.add.sprite(4120, 64, 'dewick');
+	     dewick.scale.setTo(.60, .60);
 
 	     q2.alpha = 0;
 	     q1.alpha = 0;
