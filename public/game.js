@@ -292,9 +292,10 @@ function loadData(callback) {
                 "example01@tufts.edu");
 
     }
-     
+
+    var actualscore = 500-score;
     var params = "username=" + username + "&email=" + email +
-        	"&score=" + score;
+        	"&score=" + actualscore;
      
     request.onreadystatechange = function() {
         if (request.readyState == 4 && request.status == 200){
