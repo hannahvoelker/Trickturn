@@ -332,19 +332,17 @@ function askQ2(p, q){
     }
 }
 
-function pauseGame(){
-    timer.pause();
+function pausePlayer(){
     game.camera.follow(null);
 }
 
-function unPausegame(){
-    timer.resume();
+function unPausePlayer(){
     game.camera.follow(player);
 }
 
 function askQuestion(quest, wr1, wr2, right, prof){
     // stop the game timer and player movement
-    pauseGame();
+    pausePlayer();
 
     var menu = game.add.sprite(game.camera.x + 3*(game.camera.width) / 4, h/2, 'answeroption');
     menu.scale.setTo(1.71,1.71);
@@ -376,7 +374,7 @@ function askQuestion(quest, wr1, wr2, right, prof){
         wrong1.alpha = 0;
         wrong2.alpha = 0;
         rightAns.alpha = 0;
-        unPausegame();
+        unPausePlayer();
     });
 }
 
