@@ -14,7 +14,7 @@
 	 
 	 var timerText;
 	 var player; var q1; var q2; var finish; var background; var barrier; var map;
-	 var q1asked = false; var q2asked = false;
+	 var q1asked = false; var q2asked = false; var finished = false;
 	 var score = 0;
 
 	 
@@ -23,8 +23,11 @@
 	     game.load.image('roadTiles', 'models/roads/preview.jpg');
 	     game.load.image('grassTiles', 'models/roads/grass.png');
 	     game.load.spritesheet('student', 'assets/student.png', 50, 50);
-	     game.load.image('answeroption', 'assets/nr-cone.jpg');
+	     game.load.image('answeroption', 'assets/question_backdrop.jpg');
+	     game.load.image('norman', 'assets/nr-cone.jpg');
+	     game.load.image('ming', 'assets/ming.jpg');
 	     game.load.spritesheet('event', 'assets/event.png', 30, 512);
+
 	     game.load.image('dewick', 'assets/dewick.jpg');
 	 }
 	 
@@ -98,13 +101,13 @@
 	     var style = { font: "50px Arial", fill: "#000000",
 			   align: "center" };
 	     var text = "Game Over!\n High scores:";
-	     game.add.text(game.world.centerX-150, game.world.centerY-200,
+	     t = game.add.text(game.world.centerX-150, game.world.centerY-200,
 			   text, style);
 	     t.fixedToCamera = true;
 	     t.cameraOffset.setTo(220, 200);
 	     game.camera.follow(null);
 	     
-	     style = { font: "25px Arial", fill: "#000000", align: "center" };
+	     style = { font: "25px Arial", fill: "#fff", align: "center" };
 	     
 	     // Send XMLHttpRequest to database with current user info
 	     // and retrieve the top 10 high scores
@@ -157,32 +160,83 @@
 	 
 	 function askQ1(p, q){
 	 	if (q1asked == false ){
-		 	console.log("attempting to ask question 1");
 	 		q1asked = true;
-	 		askQuestion();
+	 		q      = 'I have a question for you! \nIn impcore operational semantics, \nwhat kind of environment does \nphi represent?';
+	 		wrong1 = 'Global Variable';
+	 		wrong2 = 'Formal Variable';
+	 		right  = 'Function';
+	 		askQuestion(q, wrong1, wrong2, right, 'norman');
 	 	}
 	 }
 
 	 function askQ2(p, q){
 	 	if (q2asked == false) {
-		 	console.log("attempting to ask question 2");
 	 		q2asked = true;
-	 		askQuestion();
+	 		q      = "Mwahaha I've got a good question!\nWhen making server-side code \nwhen is it a good idea to trust \nuser input?";
+	 		wrong1 = "Always! It's safe!";
+	 		wrong2 = "Sometimes - its not very serious";
+	 		right  = 'Never!';
+	 		askQuestion(q, wrong1, wrong2, right, 'ming');
 	 	}
 	 }
 
-	 function askQuestion(){
-	     // Then add the menu
-             menu = game.add.sprite(w/2, h/2, 'answeroption');
-             menu.anchor.setTo(0.5, 0.5);
+	 function pauseGame(){
+	 	timer.pause();
+	 	game.camera.follow(null);
+	 }
 
-             // And a label to illustrate which menu item was chosen.
-             choiseLabel = game.add.text(w/2, h-150, 'Click outside menu to continue', { font: '30px Arial', fill: '#fff' });
-             choiseLabel.anchor.setTo(0.5, 0.5);
+	 function unPausegame(){
+	 	timer.resume();
+	 	game.camera.follow(player);
+	 }
+
+	 function askQuestion(quest, wr1, wr2, right, prof){
+	 	// stop the game timer and player movement
+	 	pauseGame();
+
+        var menu = game.add.sprite(game.camera.x + 3*(game.camera.width) / 4, h/2, 'answeroption');
+        menu.scale.setTo(1.71,1.71);
+
+        menu.anchor.setTo(0.5, 0.5);
+
+        var prof = game.add.sprite(game.camera.x + 70, 197, prof);
+     	prof.anchor.setTo(0.5,0.5);
+
+
+
+     	var introText = game.add.text(game.camera.x + 3*(game.camera.width) / 4, 130, quest, {font:'24px Arial', fill:'#000'});
+     	introText.anchor.setTo(.5, .5);
+
+     	var wrong1 = game.add.text(game.camera.x + 1*(game.camera.width) / 2 + 15, 240, wr1, {font:'24px Arial', fill:'#000'});
+     	wrong1.inputEnabled = true;
+     	wrong1.events.onInputDown.add(function(){wrongAnswer(introText)});
+
+     	var wrong2 = game.add.text(game.camera.x + 1*(game.camera.width) / 2 +15, 300, wr2, {font:'24px Arial', fill:'#000'});
+     	wrong2.inputEnabled = true;
+     	wrong2.events.onInputDown.add(function(){wrongAnswer(introText)});
+
+     	var rightAns = game.add.text(game.camera.x + 1*(game.camera.width) / 2 + 15, 360, right, {font:'24px Arial', fill:'#000'});
+     	rightAns.inputEnabled = true;
+     	rightAns.events.onInputDown.add(function(){
+     		introText.alpha = 0;
+     		menu.alpha = 0;
+     		prof.alpha = 0;
+     		wrong1.alpha = 0;
+     		wrong2.alpha = 0;
+     		rightAns.alpha = 0;
+     		unPausegame();
+     	});
+	 }
+
+	 function wrongAnswer(text1){
+	 	text1.text = "Wrong! Let's try again!";
 	 }
 
 	 function winGame(){
-	 	console.log("you win!!!");
+	 	if(finished == false){
+	 		finished = true;
+	 		endGame();
+	 	}
 	 }
 
 	 function update() {
