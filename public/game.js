@@ -280,7 +280,7 @@ function endGame(){
 //        (kind of annoying)
 function loadData(callback) {
     var request = new XMLHttpRequest();
-    var myurl = "http://localhost:3000/submit";
+    var myurl = "http://trickturn.herokuapp.com/submit";
     var username = prompt("Please enter your username", "");
     var email = prompt("Please enter your email",
                 "example01@tufts.edu");
