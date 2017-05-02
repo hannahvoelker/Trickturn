@@ -28,6 +28,7 @@
 	     game.load.image('ming', 'assets/ming.jpg');
 	     game.load.spritesheet('event', 'assets/event.png', 30, 512);
 
+	     game.load.image('dewick', 'assets/dewick.jpg');
 	 }
 	 
 	 function create() {
@@ -51,6 +52,9 @@
 	     q1     = game.add.sprite(1220, 0, 'event');
 	     q2     = game.add.sprite(2650, 0, 'event');
 	     finish = game.add.sprite(4080, 0, 'event');
+
+	     dewick = game.add.sprite(4120, 64, 'dewick');
+	     dewick.scale.setTo(.60, .60);
 
 	     q2.alpha = 0;
 	     q1.alpha = 0;
@@ -197,6 +201,7 @@
 
         var prof = game.add.sprite(game.camera.x + 70, 197, prof);
      	prof.anchor.setTo(0.5,0.5);
+
 
 
      	var introText = game.add.text(game.camera.x + 3*(game.camera.width) / 4, 130, quest, {font:'24px Arial', fill:'#000'});
